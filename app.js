@@ -1,34 +1,25 @@
-const request = require('request')
+
 const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
-// const urls = 'https://api.darksky.net/forecast/a2f723f3fc7cae831156acfd6f97472d/10.766,106.706'
+const address = process.argv[2]
+if(!address){
+  console.log('Please provide an address')
+} else {
+  geocode(address,(error, data) =>{
 
-// request({ url: urls, json: true}, (error, response) => {
-//   if (error){
-//     console.log('Unable connect to weather service')
-//   } else if(response.body.error){
-//     console.log('Unable to find location')
-//   }else{
-//     console.log('It is currently ' + response.body.daily.data[0].summary + '. there is a ' + response.body.currently.precipProbability + '% change of rain.')
-//   }
-// })
-
-// const geoCodeURL = "https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=pk.eyJ1IjoicXVhbm5tMDEwNSIsImEiOiJjazRkbTJzbWQwNGM4M2xucW8xZG5yaW0yIn0.h3WSLafsgG59IouCxyCHcA"
-
-// request({ url: geoCodeURL, json: true}, (error, response) => {
+    if (error) {
+      return console.log(error)
+    }
   
-//   if(error) {
-//     console.log('Unable connect to location services')
-//   } else if(response.body.error){
-//     console.log('Unable to find location, Plz try another search')
-//   }else{
-//     const latitude = response.body.features[0].center[1]
-//     const longitude = response.body.features[0].center[0]
-//     console.log(latitude, longitude)
-//   }
-// })
-
-geocode('geogia',(error, data) =>{
-  console.log('Error', error)
-  console.log('Data', data)
-})
+    forecast(data.latitude, data.longitude, (error, forecasrData) => { // forecasrData is mean data name of forecast functions, this actions to take avoid replace name with geocode function
+      if(error){
+        return console.log('Error', error)
+      }
+  
+      console.log(data.location)
+      console.log(forecasrData)
+      })
+  
+  })
+}

@@ -18,3 +18,5 @@ const geocode = (address, callback) =>{
 }
 
 module.exports = geocode
+
+// mapbox is get coords of location 
